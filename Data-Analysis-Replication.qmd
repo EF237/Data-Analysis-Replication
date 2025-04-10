@@ -9,10 +9,269 @@ editor: visual
 
 Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
-## Running Code
+## Figure 2
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Library
 
-```{r}
-1 + 1
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gridExtra)
 ```
+
+**Roost switching**
+
+```{r, message=FALSE, warning=FALSE}
+f1 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_2/roost_sw.csv"
+roost_sw <- read_csv(f1, col_names = TRUE)
+
+head(roost_sw)
+
+plot1 <- ggplot() +
+  geom_histogram(data = roost_sw, 
+                 aes(x = roost_sw), 
+                 bins = 30,
+                 fill = "light blue",
+                 colour = "black")+
+  geom_vline(data = roost_sw, 
+             aes(xintercept = 0.81),
+             color = "red",
+             linetype = "dashed")+
+  xlab("switching rate (switches / day)")+
+  ggtitle("(a) roost switching")
+```
+
+**Cluster switching**
+
+```{r, message=FALSE, warning=FALSE}
+f2 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_2/cluster_sw.csv"
+cluster_sw <- read_csv(f2, col_names = TRUE)
+
+head(cluster_sw)
+
+plot2 <- ggplot() +
+  geom_histogram(data = cluster_sw, 
+                 aes(x = cluster_sw), 
+                 bins = 30,
+                 fill = "light blue",
+                 colour = "black")+
+  geom_vline(data = cluster_sw, 
+             aes(xintercept = 4.46),
+             color = "red",
+             linetype = "dashed")+
+  xlab("switching rate (switches / day)")+
+  ggtitle("(b) cluster switching")
+```
+
+**Partner switching**
+
+```{r, message=FALSE, warning=FALSE}
+f3 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_2/partner_sw.csv"
+partner_sw <- read_csv(f3, col_names = TRUE)
+
+head(partner_sw)
+
+plot3 <- ggplot() +
+  geom_histogram(data = partner_sw, 
+                 aes(x = partner_sw), 
+                 bins = 30,
+                 fill = "light blue",
+                 colour = "black")+
+  geom_vline(data = partner_sw, 
+             aes(xintercept = 14.46),
+             color = "red",
+             linetype = "dashed")+
+  xlab("switching rate (switches / day)")+
+  ggtitle("(c) partner switching")
+```
+
+**Plots**
+
+```{r, message=FALSE, warning=FALSE}
+grid.arrange(plot1, plot2, plot3, ncol = 3)
+```
+
+## Figure 3
+
+Preliminary
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+f4 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_3/gd.csv"
+gd <- read_csv(f4, col_names = TRUE)
+
+head(gd)
+
+f5 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_3/centrality.csv"
+cent <- read_csv(f5, col_names = TRUE)
+
+head(cent)
+```
+
+Fix data
+
+```{r, message=FALSE, warning=FALSE}
+switch <- c(cent$roost_switch,gd$cs,gd$ps2)
+groomed <- c(cent$centrality,gd$n,gd$n)
+
+type <- character(length(groomed))
+
+n1 <- length(cent$centrality)
+n2 <- length(gd$cs)
+n3 <- length(type)
+
+type[1:n1] <- "Roost Switching (switches day^-1)" 
+type[(n1+1):(n1+n2)] <- "Cluster Switching (switches day^-1)"
+type[(n1+n2+1):n3] <- "Partner Switching (switches h^-1)" 
+
+gd2 <- data.frame(type = type, switch = as.numeric(switch), groomed = as.numeric(groomed))
+
+head(gd2)
+```
+
+Plot
+
+```{r, message=FALSE, warning=FALSE}
+gd2$type <- factor(gd2$type, levels = c(
+  "Roost Switching (switches day^-1)",
+  "Cluster Switching (switches day^-1)",
+  "Partner Switching (switches h^-1)"
+))
+
+ggplot(data = gd2, aes(x = switch, y = groomed, color = type)) + 
+  geom_point() +
+  geom_smooth(method = 'glm', method.args = list(family = "quasipoisson")) +
+  ylab("count of partners groomed") +
+  facet_wrap(~type, nrow = 1, scales = "free", strip.position = "bottom")+
+  theme(legend.position = "none")
+```
+
+## Figure 4
+
+setting up
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+f6 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est0.csv"
+degree_est00 <- read_csv(f6, col_names = TRUE) |>
+  mutate(label= "(a) individually variable rates of switching roost, cluster, and partner across 200 bats")
+
+f7 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est0.csv"
+degree_est0 <- read_csv(f7, col_names = TRUE) |>
+  mutate(label= "individually variable rates of switching roost, cluster, and partner across 200 bats")
+
+f8 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est1.csv"
+degree_est1 <- read_csv(f8, col_names = TRUE) |>
+  mutate(label= "(a) individually variable rates of roost switching with 200 bats")
+
+f9 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est2.csv"
+degree_est2 <- read_csv(f9, col_names = TRUE) |>
+  mutate(label= "(b) individually variable rates of cluster switching with 200 bats")
+
+f10 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est3.csv"
+degree_est3 <- read_csv(f10, col_names = TRUE) |>
+  mutate(label= "(c) individually variable rates of partner switching with 200 bats")
+  
+f11 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est4.csv"
+degree_est4 <- read_csv(f11, col_names = TRUE) |>
+  mutate(label= "individually variable switching rates correlated across types for 200 bats")
+
+f12 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est5.csv"
+degree_est5 <- read_csv(f12, col_names = TRUE) |>
+  mutate(label= "(a) individually variable rates of switching roost, cluster, and partner across 100 bats")
+
+f13 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est6.csv"
+degree_est6 <- read_csv(f13, col_names = TRUE) |>
+  mutate(label= "(b) individually variable rates of roost switching with 100 bats")
+
+f14 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est7.csv"
+degree_est7 <- read_csv(f14, col_names = TRUE) |>
+  mutate(label= "(c) individually variable rates of cluster switching with 100 bats")
+
+f15 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est8.csv"
+degree_est8 <- read_csv(f15, col_names = TRUE)|>
+  mutate(label= "(d) individually variable rates of partner switching with 100 bats")
+
+f16 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est9.csv"
+degree_est9 <- read_csv(f16, col_names = TRUE) |>
+  mutate(label= "(b) individually variable switching rates correlated across types for 100 bats")
+
+
+d0 <- degree_est00
+d1 <- rbind(degree_est1,degree_est2,degree_est3)
+d2 <- rbind(degree_est0,degree_est1,degree_est2,degree_est3,degree_est4)
+d3 <- rbind(degree_est5,degree_est6,degree_est7,degree_est8,degree_est9)
+```
+
+graph
+
+```{r, message=FALSE, warning=FALSE}
+d0 %>% pivot_longer(scale.rs.:scale.ps.,
+                    names_to = "t",
+                    values_to = "coefficient") %>%
+  # put them in order from big to small
+  mutate(
+    type = case_when(
+      t == "scale.rs." ~ "1. roost switching",
+      t == "scale.cs." ~ "2. cluster switching",
+      t == "scale.ps." ~ "3. partner switching")) %>%
+  mutate(type= fct_rev(factor(type))) %>% 
+  ggplot(aes(x = type, y = coefficient, color = type)) +
+  facet_wrap(~label, ncol=1)+
+  coord_flip()+
+  geom_violin(width = 0.4) +
+  geom_boxplot(width = 0.1, outlier.size = 0.25) +
+  theme(legend.position = "none") +
+  xlab("") +
+  ylab("effect on grooming degree (standardized coefficient)") +
+   scale_color_manual(values= c("blue", "dark green", "red"))
+```
+
+## Figure 5
+
+set up
+
+```{r, message=FALSE, warning=FALSE}
+base_deg_roost1 <-
+  median(degree_est2$scale.rs.)
+base_deg_roost2 <-
+  median(degree_est3$scale.rs.)
+base_deg_cluster1 <-
+  median(degree_est1$scale.cs.)
+base_deg_cluster2 <-
+  median(degree_est3$scale.cs.)
+base_deg_partner1 <-
+  median(degree_est1$scale.ps.)
+base_deg_partner2 <-
+  median(degree_est2$scale.ps.)
+```
+
+graph
+
+```{r, message=FALSE, warning=FALSE}
+d1 %>%
+  pivot_longer(scale.rs.:scale.ps.,
+               names_to = "t",
+               values_to = "coefficient") |>
+  mutate(
+    type = case_when(
+      t == "scale.rs." ~ "1. roost switching",
+      t == "scale.cs." ~ "2. cluster switching",
+      t == "scale.ps." ~ "3. partner switching")) |>
+  mutate(type= fct_rev(factor(type))) |>
+  ggplot(aes(x = type, y = coefficient, color = type)) +
+  facet_wrap(~label, ncol=1)+
+  coord_flip()+
+  geom_violin(width = 0.4) +
+  geom_boxplot(width = 0.1, outlier.size = 0.25) +
+    theme(legend.position = "none") +
+  xlab("") +
+  ylab("effect on grooming degree (standardized coefficient)") +
+  geom_hline(yintercept = max(c(base_deg_roost1,base_deg_roost2)), linetype = 'dashed', color = 'red') +
+  geom_hline(yintercept = max(c(base_deg_cluster1,base_deg_cluster2)), linetype = 'dashed', color = 'dark green') +
+  geom_hline(yintercept = max(c(base_deg_partner1,base_deg_partner2)), linetype = 'dashed', color = 'blue') +
+   scale_color_manual(values= c("blue", "dark green", "red"))
+```
+
+
