@@ -105,15 +105,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="hierarchically-embedded-scales-of-movement-shape-the-social-networks-of-vampire-bats" class="level1">
 <h1>Hierarchically embedded scales of movement shape the social networks of vampire bats</h1>
-<p>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
-<section id="figure-2" class="level2">
-<h2 class="anchored" data-anchor-id="figure-2">Figure 2</h2>
-<p>Library</p>
+<p><strong>Original Article:</strong> Published:24 April 2024 <a href="https://doi.org/10.1098/rspb.2023.2880" class="uri">https://doi.org/10.1098/rspb.2023.2880</a></p>
+<p>This research investigates how individual variation in movement across nested spatial scales (roosts, clusters, and grooming partners) influences social connectedness in vampire bats. Using agent-based modeling, the study shows that movement within roosts plays a larger role in shaping grooming networks than roost switching, revealing how overlooked spatial scales can lead to misinterpretation of social relationships.</p>
+<p>Before starting the analysis, we need to load the necessary packages we’ll be using.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(grid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Roost switching</strong></p>
+<section id="figure-2" class="level2">
+<h2 class="anchored" data-anchor-id="figure-2">Figure 2</h2>
+<p>This first figure shows the distribution of empirical switching rate estimates across bats.</p>
+<p>First, upload the roost data using tidyverse functions and take a quick look at it. It might be a bit confusing, but note that <code>roost_sw</code> is both the name of the file and the variable containing the switching data needed for the histogram. Use <code>ggplot</code> to create the figure, including the previously calculated x-intercept value in the plot. Axis labels are set to <code>NULL</code> since all histograms will be combined later.</p>
+<p><strong>Roost switching*</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_2/roost_sw.csv"</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>roost_sw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f1, <span class="at">col_names =</span> <span class="cn">TRUE</span>)</span>
@@ -140,10 +144,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fl">0.81</span>),</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>,</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>)<span class="sc">+</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"switching rate (switches / day)"</span>)<span class="sc">+</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"(a) roost switching"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"(a) roost switching"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Cluster switching</strong></p>
+<p>The same process is applied to <code>cluster_sw</code>, with the same confusing situation regarding the title and data.</p>
+<p><strong>Cluster switching*</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_2/cluster_sw.csv"</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>cluster_sw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f2, <span class="at">col_names =</span> <span class="cn">TRUE</span>)</span>
@@ -170,25 +176,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fl">4.46</span>),</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>,</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>)<span class="sc">+</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"switching rate (switches / day)"</span>)<span class="sc">+</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"(b) cluster switching"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"(b) cluster switching"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Partner switching</strong></p>
+<p>Finally, repeat the process for <code>partner_sw</code>, keeping the same confusing details. However, this time we will multiply by 24, as the data was collected consecutively over an hour-long period within a 24-hour day.</p>
+<p><strong>Partner switching*</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_2/partner_sw.csv"</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>partner_sw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f3, <span class="at">col_names =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(partner_sw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>partner_sw<span class="sc">$</span>partner_sw <span class="ot">&lt;-</span> partner_sw<span class="sc">$</span>partner_sw <span class="sc">*</span> <span class="dv">24</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(partner_sw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 3
    ...1 partner_sw bats_i
   &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt; 
-1     1      0.427 add   
-2     2      1.33  cnone 
-3     3      0.480 adldd 
-4     4      0.337 cdw   
-5     5      0.532 cldw  
-6     6      2.50  ax    </code></pre>
+1     1      10.2  add   
+2     2      31.8  cnone 
+3     3      11.5  adldd 
+4     4       8.09 cdw   
+5     5      12.8  cldw  
+6     6      60.0  ax    </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plot3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">data =</span> partner_sw, </span>
@@ -200,12 +210,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fl">14.46</span>),</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>,</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>)<span class="sc">+</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"switching rate (switches / day)"</span>)<span class="sc">+</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"(c) partner switching"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"(c) partner switching"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Plots</strong></p>
+<p>Now, combine all the plots using the <code>grid.arrange</code> function and add the axis titles that were not included earlier.</p>
+<p><strong>Plotting*</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(plot1, plot2, plot3, <span class="at">ncol =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrangeGrob</span>(plot1, plot2, plot3, <span class="at">ncol =</span> <span class="dv">3</span>),  <span class="at">left =</span> <span class="fu">textGrob</span>(<span class="st">"count"</span>, <span class="at">rot =</span> <span class="dv">90</span>, <span class="at">gp =</span> <span class="fu">gpar</span>(<span class="at">fontsize =</span> <span class="dv">14</span>)),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">bottom =</span> <span class="fu">textGrob</span>(<span class="st">"switching rate (switches / day ^-1)"</span>, <span class="at">gp =</span> <span class="fu">gpar</span>(<span class="at">fontsize =</span> <span class="dv">14</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -214,17 +229,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p><strong>Discussion*</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/figure%202.jpg" class="img-fluid figure-img"></p>
+<figcaption><strong>Original Figure 2</strong></figcaption>
+</figure>
+</div>
+<p>Figuring out this plot turned out to be less difficult than I initially expected—the most challenging part was actually understanding the datasets themselves. The way the information was labeled made things a bit confusing at first. For the x-intercepts, I added them manually based on the summary statistics seen in the article. The original figure seemed to use a more formal analysis to derive those values. So in that case, I took a bit of a shortcut.</p>
+<p>Roost switching and cluster switching plots came together smoothly and matched the originals without much trouble. Partner switching, on the other hand, was more complicated. The initial graph I created looked nothing like the one in the paper. I even thought they might have uploaded the wrong dataset since there were multiple files with the same name. I tried using an alternative dataset, summing values and grouping by name, but still got the same outcome.</p>
+<p>Eventually, I realized they had multiplied the partner switching data by 24 to reflect a full 24-hour period. I still don’t fully grasp the broader concept behind that transformation, likely because the dataset falls outside my usual area of expertise. Overall, I was able to recreate this figure to closely match the original.</p>
 </section>
 <section id="figure-3" class="level2">
 <h2 class="anchored" data-anchor-id="figure-3">Figure 3</h2>
-<p>Preliminary</p>
+<p>This next figure displays empirical data showing how movements within roosts predict the number of grooming partners.</p>
+<p>To begin creating this figure, load the <code>gd</code> and <code>cent</code> datasets and take a quick look at their structure.</p>
+<p><strong>Loading*</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>f4 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_3/gd.csv"</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>gd <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f4, <span class="at">col_names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>f4 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_3/gd.csv"</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>gd <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f4, <span class="at">col_names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 6
    ...1 bat        n    cs     ps    ps2
@@ -252,7 +277,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 6     7 F583          13        0.717</code></pre>
 </div>
 </div>
-<p>Fix data</p>
+<p>After reviewing the datasets, we need to update the column titles for clarity. While we didn’t do this in the previous figure, this one is more complex and requires additional layers for proper analysis.</p>
+<p>Using the switching and grooming data, we’ll define three categories—Roost, Cluster, and Partner Switching—and ensure these edits are saved in a new version of the dataframe called <code>gd2</code>.</p>
+<p>We can verify that the changes were successful by viewing the updated dataset.</p>
+<p><strong>Organizing*</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> <span class="ot">&lt;-</span> <span class="fu">c</span>(cent<span class="sc">$</span>roost_switch,gd<span class="sc">$</span>cs,gd<span class="sc">$</span>ps2)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>groomed <span class="ot">&lt;-</span> <span class="fu">c</span>(cent<span class="sc">$</span>centrality,gd<span class="sc">$</span>n,gd<span class="sc">$</span>n)</span>
@@ -280,7 +308,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 6 Roost Switching (switches day^-1) 0.7165775      13</code></pre>
 </div>
 </div>
-<p>Plot</p>
+<p>Now for the fun part! First, we’ll organize the data frame types to match the levels used in the original article. To make things easier, we’ve already labeled the datasets with the titles we plan to use in the final figure. Generate the figure using <code>ggplot</code>, including a 95% confidence interval.</p>
+<p><strong>Plotting*</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>gd2<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="fu">factor</span>(gd2<span class="sc">$</span>type, <span class="at">levels =</span> <span class="fu">c</span>(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Roost Switching (switches day^-1)"</span>,</span>
@@ -302,84 +331,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p><strong>Discussion*</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/figure%203.jpg" class="img-fluid figure-img"></p>
+<figcaption><strong>Original Figure 3</strong></figcaption>
+</figure>
+</div>
+<p>This one also ended up being pretty close to the original. Once again, the dataset names made the analysis a bit tricky to navigate. One of the main challenges I faced was relabeling the “type” variable. I know the original authors used a loop for this, but I wanted a more straightforward approach since I’m not a big fan of loops. Once I got past the labeling hurdle, I ran into an issue where the colors and the order of categories in my plot didn’t match the original. To fix that, I added a line of code to reorder the data, which helped align my graph more closely with the published version.</p>
 </section>
 <section id="figure-4" class="level2">
 <h2 class="anchored" data-anchor-id="figure-4">Figure 4</h2>
-<p>setting up</p>
+<p>This next figure illustrates the effects on grooming outdegree centrality when individual variation in movement propensity is independent across spatial scales.</p>
+<p>The data we’re uploading here will be used for both Figure 4 and Figure 5. It will be split into two separate data frames: <code>d0</code> for the Figure 4 graph and <code>d1</code> for the Figure 5 graph.</p>
+<p><strong>Loading*</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>f6 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est0.csv"</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>degree_est00 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f6, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(a) individually variable rates of switching roost, cluster, and partner across 200 bats"</span>)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>f7 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est0.csv"</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>degree_est0 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f7, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"individually variable rates of switching roost, cluster, and partner across 200 bats"</span>)</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>f8 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est1.csv"</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>degree_est1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f8, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(a) individually variable rates of roost switching with 200 bats"</span>)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>f9 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est2.csv"</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>degree_est2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f9, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(b) individually variable rates of cluster switching with 200 bats"</span>)</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>f10 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est3.csv"</span></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>degree_est3 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f10, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(c) individually variable rates of partner switching with 200 bats"</span>)</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>f11 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est4.csv"</span></span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>degree_est4 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f11, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"individually variable switching rates correlated across types for 200 bats"</span>)</span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>f12 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est5.csv"</span></span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>degree_est5 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f12, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(a) individually variable rates of switching roost, cluster, and partner across 100 bats"</span>)</span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>f13 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est6.csv"</span></span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>degree_est6 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f13, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(b) individually variable rates of roost switching with 100 bats"</span>)</span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>f14 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est7.csv"</span></span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>degree_est7 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f14, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(c) individually variable rates of cluster switching with 100 bats"</span>)</span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>f15 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est8.csv"</span></span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>degree_est8 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f15, <span class="at">col_names =</span> <span class="cn">TRUE</span>)<span class="sc">|&gt;</span></span>
-<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(d) individually variable rates of partner switching with 100 bats"</span>)</span>
-<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>f16 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est9.csv"</span></span>
-<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>degree_est9 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f16, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(b) individually variable switching rates correlated across types for 100 bats"</span>)</span>
-<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>d0 <span class="ot">&lt;-</span> degree_est00</span>
-<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(degree_est1,degree_est2,degree_est3)</span>
-<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(degree_est0,degree_est1,degree_est2,degree_est3,degree_est4)</span>
-<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>d3 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(degree_est5,degree_est6,degree_est7,degree_est8,degree_est9)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>f6 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est0.csv"</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>degree_est00 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f6, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(a) individually variable rates of switching roost, cluster, and partner across 200 bats"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>f7 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est0.csv"</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>degree_est0 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f7, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"individually variable rates of switching roost, cluster, and partner across 200 bats"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>f8 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est1.csv"</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>degree_est1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f8, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(a) individually variable rates of roost switching with 200 bats"</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>f9 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est2.csv"</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>degree_est2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f9, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(b) individually variable rates of cluster switching with 200 bats"</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>f10 <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est3.csv"</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>degree_est3 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(f10, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span> <span class="st">"(c) individually variable rates of partner switching with 200 bats"</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>d0 <span class="ot">&lt;-</span> degree_est00</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(degree_est1,degree_est2,degree_est3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>graph</p>
+<p>To graph the data for <code>d0</code>, first convert it to a longer format and relabel the scales with their correct names. Once those changes are complete, use <code>ggplot</code> to create a violin plot overlaid with a boxplot for each scale label.</p>
+<p><strong>Graphing*</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>d0 <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(scale.rs.<span class="sc">:</span>scale.ps.,</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">names_to =</span> <span class="st">"t"</span>,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">values_to =</span> <span class="st">"coefficient"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># put them in order from big to small</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">case_when</span>(</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.rs."</span> <span class="sc">~</span> <span class="st">"1. roost switching"</span>,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.cs."</span> <span class="sc">~</span> <span class="st">"2. cluster switching"</span>,</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.ps."</span> <span class="sc">~</span> <span class="st">"3. partner switching"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type=</span> <span class="fu">fct_rev</span>(<span class="fu">factor</span>(type))) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> type, <span class="at">y =</span> coefficient, <span class="at">color =</span> type)) <span class="sc">+</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>label, <span class="at">ncol=</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">width =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">outlier.size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"effect on grooming degree (standardized coefficient)"</span>) <span class="sc">+</span></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_color_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"dark green"</span>, <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  ...1  scale.rs. scale.cs. scale.ps. label                                     
+  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                                     
+1 X1       0.0393    0.0629   0.0229  (a) individually variable rates of switch…
+2 X2       0.0343    0.0477   0.0213  (a) individually variable rates of switch…
+3 X3       0.0329    0.0565   0.0243  (a) individually variable rates of switch…
+4 X4       0.0432    0.0441   0.0239  (a) individually variable rates of switch…
+5 X5       0.0432    0.0448   0.00901 (a) individually variable rates of switch…
+6 X6       0.0326    0.0521   0.0266  (a) individually variable rates of switch…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>d0 <span class="sc">|&gt;</span> <span class="fu">pivot_longer</span>(scale.rs.<span class="sc">:</span>scale.ps.,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">names_to =</span> <span class="st">"t"</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">values_to =</span> <span class="st">"coefficient"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.rs."</span> <span class="sc">~</span> <span class="st">"1. roost switching"</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.cs."</span> <span class="sc">~</span> <span class="st">"2. cluster switching"</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.ps."</span> <span class="sc">~</span> <span class="st">"3. partner switching"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type=</span> <span class="fu">fct_rev</span>(<span class="fu">factor</span>(type))) <span class="sc">|&gt;</span> </span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> type, <span class="at">y =</span> coefficient, <span class="at">color =</span> type)) <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>label, <span class="at">ncol=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">width =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"effect on grooming degree (standardized coefficient)"</span>) <span class="sc">+</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_color_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"dark green"</span>, <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -388,56 +411,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p><strong>Discussion*</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/figure%204.jpg" class="img-fluid figure-img"></p>
+<figcaption><strong>Original Figure 4</strong></figcaption>
+</figure>
+</div>
+<p>This one was definitely one of the toughest figures to recreate. The data was incredibly dense—with tons of files that didn’t even appear to be used in the final figure—so just figuring out what to include took some time. Once I managed to process the right data, the initial plots came out way too large, so I adjusted the sizing to better match the original. I also ran into issues with the colors being out of order, which I fixed by adding a scale to control the color mapping. In the end, the figure came out pretty close to the original, though it still has a bit of a “knockoff” feel to it.</p>
 </section>
 <section id="figure-5" class="level2">
 <h2 class="anchored" data-anchor-id="figure-5">Figure 5</h2>
-<p>set up</p>
+<p>This final graph, as mentioned earlier, is very similar to the previous one. This time, however, use the <code>d1</code> dataframe instead.</p>
+<p><strong>Graphing*</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>base_deg_roost1 <span class="ot">&lt;-</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median</span>(degree_est2<span class="sc">$</span>scale.rs.)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>base_deg_roost2 <span class="ot">&lt;-</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median</span>(degree_est3<span class="sc">$</span>scale.rs.)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>base_deg_cluster1 <span class="ot">&lt;-</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median</span>(degree_est1<span class="sc">$</span>scale.cs.)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>base_deg_cluster2 <span class="ot">&lt;-</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median</span>(degree_est3<span class="sc">$</span>scale.cs.)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>base_deg_partner1 <span class="ot">&lt;-</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median</span>(degree_est1<span class="sc">$</span>scale.ps.)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>base_deg_partner2 <span class="ot">&lt;-</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median</span>(degree_est2<span class="sc">$</span>scale.ps.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  ...1  scale.rs. scale.cs. scale.ps. label                                     
+  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                                     
+1 X1       0.0400   0.00660    0.0214 (a) individually variable rates of roost …
+2 X2       0.0299   0.0107     0.0205 (a) individually variable rates of roost …
+3 X3       0.0337   0.0164     0.0222 (a) individually variable rates of roost …
+4 X4       0.0424   0.0129     0.0174 (a) individually variable rates of roost …
+5 X5       0.0436   0.0131     0.0163 (a) individually variable rates of roost …
+6 X6       0.0390   0.00712    0.0219 (a) individually variable rates of roost …</code></pre>
 </div>
-<p>graph</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">%&gt;%</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(scale.rs.<span class="sc">:</span>scale.ps.,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"t"</span>,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"coefficient"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">case_when</span>(</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.rs."</span> <span class="sc">~</span> <span class="st">"1. roost switching"</span>,</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.cs."</span> <span class="sc">~</span> <span class="st">"2. cluster switching"</span>,</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.ps."</span> <span class="sc">~</span> <span class="st">"3. partner switching"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type=</span> <span class="fu">fct_rev</span>(<span class="fu">factor</span>(type))) <span class="sc">|&gt;</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> type, <span class="at">y =</span> coefficient, <span class="at">color =</span> type)) <span class="sc">+</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>label, <span class="at">ncol=</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">width =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">outlier.size =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"effect on grooming degree (standardized coefficient)"</span>) <span class="sc">+</span></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">max</span>(<span class="fu">c</span>(base_deg_roost1,base_deg_roost2)), <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">color =</span> <span class="st">'red'</span>) <span class="sc">+</span></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">max</span>(<span class="fu">c</span>(base_deg_cluster1,base_deg_cluster2)), <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">color =</span> <span class="st">'dark green'</span>) <span class="sc">+</span></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">max</span>(<span class="fu">c</span>(base_deg_partner1,base_deg_partner2)), <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">color =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_color_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"dark green"</span>, <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(scale.rs.<span class="sc">:</span>scale.ps.,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"t"</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"coefficient"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.rs."</span> <span class="sc">~</span> <span class="st">"1. roost switching"</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.cs."</span> <span class="sc">~</span> <span class="st">"2. cluster switching"</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>      t <span class="sc">==</span> <span class="st">"scale.ps."</span> <span class="sc">~</span> <span class="st">"3. partner switching"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type=</span> <span class="fu">fct_rev</span>(<span class="fu">factor</span>(type))) <span class="sc">|&gt;</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> type, <span class="at">y =</span> coefficient, <span class="at">color =</span> type)) <span class="sc">+</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>label, <span class="at">ncol=</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"effect on grooming degree (standardized coefficient)"</span>) <span class="sc">+</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_color_manual</span>(<span class="at">values=</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"dark green"</span>, <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Data-Analysis-Replication_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data-Analysis-Replication_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<p><strong>Discussion*</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/figure%205.jpg" class="img-fluid figure-img"></p>
+<figcaption><strong>Original Figure 5</strong></figcaption>
+</figure>
+</div>
+<p>This is probably the figure that resembles the original the least. While they have a GitHub repository for the datasets, I chose not to rely on it and tried to figure things out on my own. Unfortunately, I couldn’t figure out how to generate the lines properly to match the original, and my scaling is a bit off as well. I wish there had been more detail in the article about how the lines in the graph were created, but I understand that they likely left it vague since they have a GitHub with all their figures. Still, my figure doesn’t look very close to the original. Also, I think there might be an error in the published article because I have no idea what that green dashed line is supposed to represent.</p>
 </section>
 </section>
 

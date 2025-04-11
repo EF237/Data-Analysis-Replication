@@ -7,18 +7,25 @@ editor: visual
 
 # Hierarchically embedded scales of movement shape the social networks of vampire bats
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+**Original Article:** Published:24 April 2024 <https://doi.org/10.1098/rspb.2023.2880>
 
-## Figure 2
+This research investigates how individual variation in movement across nested spatial scales (roosts, clusters, and grooming partners) influences social connectedness in vampire bats. Using agent-based modeling, the study shows that movement within roosts plays a larger role in shaping grooming networks than roost switching, revealing how overlooked spatial scales can lead to misinterpretation of social relationships.
 
-Library
+Before starting the analysis, we need to load the necessary packages we'll be using.
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(gridExtra)
+library(grid)
 ```
 
-**Roost switching**
+## Figure 2
+
+This first figure shows the distribution of empirical switching rate estimates across bats.
+
+First, upload the roost data using tidyverse functions and take a quick look at it. It might be a bit confusing, but note that `roost_sw` is both the name of the file and the variable containing the switching data needed for the histogram. Use `ggplot` to create the figure, including the previously calculated x-intercept value in the plot. Axis labels are set to `NULL` since all histograms will be combined later.
+
+**Roost switching\***
 
 ```{r, message=FALSE, warning=FALSE}
 f1 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_2/roost_sw.csv"
@@ -36,11 +43,14 @@ plot1 <- ggplot() +
              aes(xintercept = 0.81),
              color = "red",
              linetype = "dashed")+
-  xlab("switching rate (switches / day)")+
+    xlab(NULL)+
+   ylab(NULL)+
   ggtitle("(a) roost switching")
 ```
 
-**Cluster switching**
+The same process is applied to `cluster_sw`, with the same confusing situation regarding the title and data.
+
+**Cluster switching\***
 
 ```{r, message=FALSE, warning=FALSE}
 f2 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_2/cluster_sw.csv"
@@ -58,15 +68,20 @@ plot2 <- ggplot() +
              aes(xintercept = 4.46),
              color = "red",
              linetype = "dashed")+
-  xlab("switching rate (switches / day)")+
+    xlab(NULL)+
+   ylab(NULL)+
   ggtitle("(b) cluster switching")
 ```
 
-**Partner switching**
+Finally, repeat the process for `partner_sw`, keeping the same confusing details. However, this time we will multiply by 24, as the data was collected consecutively over an hour-long period within a 24-hour day.
+
+**Partner switching\***
 
 ```{r, message=FALSE, warning=FALSE}
 f3 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_2/partner_sw.csv"
 partner_sw <- read_csv(f3, col_names = TRUE)
+
+partner_sw$partner_sw <- partner_sw$partner_sw * 24
 
 head(partner_sw)
 
@@ -80,23 +95,41 @@ plot3 <- ggplot() +
              aes(xintercept = 14.46),
              color = "red",
              linetype = "dashed")+
-  xlab("switching rate (switches / day)")+
+    xlab(NULL)+
+  ylab(NULL)+
   ggtitle("(c) partner switching")
 ```
 
-**Plots**
+Now, combine all the plots using the `grid.arrange` function and add the axis titles that were not included earlier.
+
+**Plotting\***
 
 ```{r, message=FALSE, warning=FALSE}
-grid.arrange(plot1, plot2, plot3, ncol = 3)
+grid.arrange(
+  arrangeGrob(plot1, plot2, plot3, ncol = 3),  left = textGrob("count", rot = 90, gp = gpar(fontsize = 14)),
+  bottom = textGrob("switching rate (switches / day ^-1)", gp = gpar(fontsize = 14))
+)
 ```
+
+**Discussion\***
+
+![**Original Figure 2**](images/figure%202.jpg)
+
+Figuring out this plot turned out to be less difficult than I initially expected—the most challenging part was actually understanding the datasets themselves. The way the information was labeled made things a bit confusing at first. For the x-intercepts, I added them manually based on the summary statistics seen in the article. The original figure seemed to use a more formal analysis to derive those values. So in that case, I took a bit of a shortcut.
+
+Roost switching and cluster switching plots came together smoothly and matched the originals without much trouble. Partner switching, on the other hand, was more complicated. The initial graph I created looked nothing like the one in the paper. I even thought they might have uploaded the wrong dataset since there were multiple files with the same name. I tried using an alternative dataset, summing values and grouping by name, but still got the same outcome.
+
+Eventually, I realized they had multiplied the partner switching data by 24 to reflect a full 24-hour period. I still don’t fully grasp the broader concept behind that transformation, likely because the dataset falls outside my usual area of expertise. Overall, I was able to recreate this figure to closely match the original.
 
 ## Figure 3
 
-Preliminary
+This next figure displays empirical data showing how movements within roosts predict the number of grooming partners.
+
+To begin creating this figure, load the `gd` and `cent` datasets and take a quick look at their structure.
+
+**Loading\***
 
 ```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
-
 f4 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURE_3/gd.csv"
 gd <- read_csv(f4, col_names = TRUE)
 
@@ -108,7 +141,13 @@ cent <- read_csv(f5, col_names = TRUE)
 head(cent)
 ```
 
-Fix data
+After reviewing the datasets, we need to update the column titles for clarity. While we didn’t do this in the previous figure, this one is more complex and requires additional layers for proper analysis.
+
+Using the switching and grooming data, we'll define three categories—Roost, Cluster, and Partner Switching—and ensure these edits are saved in a new version of the dataframe called `gd2`.
+
+We can verify that the changes were successful by viewing the updated dataset.
+
+**Organizing\***
 
 ```{r, message=FALSE, warning=FALSE}
 switch <- c(cent$roost_switch,gd$cs,gd$ps2)
@@ -129,7 +168,9 @@ gd2 <- data.frame(type = type, switch = as.numeric(switch), groomed = as.numeric
 head(gd2)
 ```
 
-Plot
+Now for the fun part! First, we’ll organize the data frame types to match the levels used in the original article. To make things easier, we’ve already labeled the datasets with the titles we plan to use in the final figure. Generate the figure using `ggplot`, including a 95% confidence interval.
+
+**Plotting\***
 
 ```{r, message=FALSE, warning=FALSE}
 gd2$type <- factor(gd2$type, levels = c(
@@ -146,13 +187,21 @@ ggplot(data = gd2, aes(x = switch, y = groomed, color = type)) +
   theme(legend.position = "none")
 ```
 
+**Discussion\***
+
+![**Original Figure 3**](images/figure%203.jpg)
+
+This one also ended up being pretty close to the original. Once again, the dataset names made the analysis a bit tricky to navigate. One of the main challenges I faced was relabeling the "type" variable. I know the original authors used a loop for this, but I wanted a more straightforward approach since I’m not a big fan of loops. Once I got past the labeling hurdle, I ran into an issue where the colors and the order of categories in my plot didn’t match the original. To fix that, I added a line of code to reorder the data, which helped align my graph more closely with the published version.
+
 ## Figure 4
 
-setting up
+This next figure illustrates the effects on grooming outdegree centrality when individual variation in movement propensity is independent across spatial scales.
+
+The data we're uploading here will be used for both Figure 4 and Figure 5. It will be split into two separate data frames: `d0` for the Figure 4 graph and `d1` for the Figure 5 graph.
+
+**Loading\***
 
 ```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
-
 f6 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est0.csv"
 degree_est00 <- read_csv(f6, col_names = TRUE) |>
   mutate(label= "(a) individually variable rates of switching roost, cluster, and partner across 200 bats")
@@ -172,84 +221,54 @@ degree_est2 <- read_csv(f9, col_names = TRUE) |>
 f10 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est3.csv"
 degree_est3 <- read_csv(f10, col_names = TRUE) |>
   mutate(label= "(c) individually variable rates of partner switching with 200 bats")
-  
-f11 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est4.csv"
-degree_est4 <- read_csv(f11, col_names = TRUE) |>
-  mutate(label= "individually variable switching rates correlated across types for 200 bats")
-
-f12 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est5.csv"
-degree_est5 <- read_csv(f12, col_names = TRUE) |>
-  mutate(label= "(a) individually variable rates of switching roost, cluster, and partner across 100 bats")
-
-f13 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est6.csv"
-degree_est6 <- read_csv(f13, col_names = TRUE) |>
-  mutate(label= "(b) individually variable rates of roost switching with 100 bats")
-
-f14 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est7.csv"
-degree_est7 <- read_csv(f14, col_names = TRUE) |>
-  mutate(label= "(c) individually variable rates of cluster switching with 100 bats")
-
-f15 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est8.csv"
-degree_est8 <- read_csv(f15, col_names = TRUE)|>
-  mutate(label= "(d) individually variable rates of partner switching with 100 bats")
-
-f16 <- "https://raw.githubusercontent.com/anonymousscientist8/scales-of-movement/refs/heads/main/graphs_and_analyses/FIGURES_4_5_S2_S3/degree_est9.csv"
-degree_est9 <- read_csv(f16, col_names = TRUE) |>
-  mutate(label= "(b) individually variable switching rates correlated across types for 100 bats")
 
 
 d0 <- degree_est00
 d1 <- rbind(degree_est1,degree_est2,degree_est3)
-d2 <- rbind(degree_est0,degree_est1,degree_est2,degree_est3,degree_est4)
-d3 <- rbind(degree_est5,degree_est6,degree_est7,degree_est8,degree_est9)
 ```
 
-graph
+To graph the data for `d0`, first convert it to a longer format and relabel the scales with their correct names. Once those changes are complete, use `ggplot` to create a violin plot overlaid with a boxplot for each scale label.
+
+**Graphing\***
 
 ```{r, message=FALSE, warning=FALSE}
-d0 %>% pivot_longer(scale.rs.:scale.ps.,
+head(d0)
+
+d0 |> pivot_longer(scale.rs.:scale.ps.,
                     names_to = "t",
-                    values_to = "coefficient") %>%
-  # put them in order from big to small
+                    values_to = "coefficient") |>
   mutate(
     type = case_when(
       t == "scale.rs." ~ "1. roost switching",
       t == "scale.cs." ~ "2. cluster switching",
-      t == "scale.ps." ~ "3. partner switching")) %>%
-  mutate(type= fct_rev(factor(type))) %>% 
+      t == "scale.ps." ~ "3. partner switching")) |>
+  mutate(type= fct_rev(factor(type))) |> 
   ggplot(aes(x = type, y = coefficient, color = type)) +
   facet_wrap(~label, ncol=1)+
   coord_flip()+
-  geom_violin(width = 0.4) +
-  geom_boxplot(width = 0.1, outlier.size = 0.25) +
+  geom_violin(width = 0.25) +
+  geom_boxplot(width = 0.1) +
   theme(legend.position = "none") +
   xlab("") +
   ylab("effect on grooming degree (standardized coefficient)") +
    scale_color_manual(values= c("blue", "dark green", "red"))
 ```
 
+**Discussion\***
+
+![**Original Figure 4**](images/figure%204.jpg)
+
+This one was definitely one of the toughest figures to recreate. The data was incredibly dense—with tons of files that didn’t even appear to be used in the final figure—so just figuring out what to include took some time. Once I managed to process the right data, the initial plots came out way too large, so I adjusted the sizing to better match the original. I also ran into issues with the colors being out of order, which I fixed by adding a scale to control the color mapping. In the end, the figure came out pretty close to the original, though it still has a bit of a "knockoff" feel to it.
+
 ## Figure 5
 
-set up
+This final graph, as mentioned earlier, is very similar to the previous one. This time, however, use the `d1` dataframe instead.
+
+**Graphing\***
 
 ```{r, message=FALSE, warning=FALSE}
-base_deg_roost1 <-
-  median(degree_est2$scale.rs.)
-base_deg_roost2 <-
-  median(degree_est3$scale.rs.)
-base_deg_cluster1 <-
-  median(degree_est1$scale.cs.)
-base_deg_cluster2 <-
-  median(degree_est3$scale.cs.)
-base_deg_partner1 <-
-  median(degree_est1$scale.ps.)
-base_deg_partner2 <-
-  median(degree_est2$scale.ps.)
-```
+head(d1)
 
-graph
-
-```{r, message=FALSE, warning=FALSE}
 d1 %>%
   pivot_longer(scale.rs.:scale.ps.,
                names_to = "t",
@@ -263,15 +282,16 @@ d1 %>%
   ggplot(aes(x = type, y = coefficient, color = type)) +
   facet_wrap(~label, ncol=1)+
   coord_flip()+
-  geom_violin(width = 0.4) +
-  geom_boxplot(width = 0.1, outlier.size = 0.25) +
+  geom_violin(width = 0.5) +
+  geom_boxplot(width = 0.1) +
     theme(legend.position = "none") +
   xlab("") +
   ylab("effect on grooming degree (standardized coefficient)") +
-  geom_hline(yintercept = max(c(base_deg_roost1,base_deg_roost2)), linetype = 'dashed', color = 'red') +
-  geom_hline(yintercept = max(c(base_deg_cluster1,base_deg_cluster2)), linetype = 'dashed', color = 'dark green') +
-  geom_hline(yintercept = max(c(base_deg_partner1,base_deg_partner2)), linetype = 'dashed', color = 'blue') +
    scale_color_manual(values= c("blue", "dark green", "red"))
 ```
 
+**Discussion\***
 
+![**Original Figure 5**](images/figure%205.jpg)
+
+This is probably the figure that resembles the original the least. While they have a GitHub repository for the datasets, I chose not to rely on it and tried to figure things out on my own. Unfortunately, I couldn’t figure out how to generate the lines properly to match the original, and my scaling is a bit off as well. I wish there had been more detail in the article about how the lines in the graph were created, but I understand that they likely left it vague since they have a GitHub with all their figures. Still, my figure doesn't look very close to the original. Also, I think there might be an error in the published article because I have no idea what that green dashed line is supposed to represent.
