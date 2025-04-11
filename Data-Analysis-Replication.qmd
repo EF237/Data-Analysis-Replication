@@ -300,4 +300,4 @@ This is probably the figure that resembles the original the least. While they ha
 
 ## Conclusion
 
-In summary, I was able to reproduce most of the visual figures closely, with some deviations due to data labeling, transformation steps, or lack of clarity in the article. The exercise highlighted the importance of clear documentation in open science and helped me better understand how movement behavior can shape social networks in animal systems.
+In summary, I was able to reproduce most of the visual figures closely, with some deviations here and there.
