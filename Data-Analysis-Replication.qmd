@@ -11,6 +11,8 @@ editor: visual
 
 This research investigates how individual variation in movement across nested spatial scales (roosts, clusters, and grooming partners) influences social connectedness in vampire bats. Using agent-based modeling, the study shows that movement within roosts plays a larger role in shaping grooming networks than roost switching, revealing how overlooked spatial scales can lead to misinterpretation of social relationships.
 
+**This document attempts to replicate the figures and analytical visuals from that article.**
+
 Before starting the analysis, we need to load the necessary packages we'll be using.
 
 ```{r, message=FALSE, warning=FALSE}
@@ -119,7 +121,7 @@ Figuring out this plot turned out to be less difficult than I initially expected
 
 Roost switching and cluster switching plots came together smoothly and matched the originals without much trouble. Partner switching, on the other hand, was more complicated. The initial graph I created looked nothing like the one in the paper. I even thought they might have uploaded the wrong dataset since there were multiple files with the same name. I tried using an alternative dataset, summing values and grouping by name, but still got the same outcome.
 
-Eventually, I realized they had multiplied the partner switching data by 24 to reflect a full 24-hour period. I still don’t fully grasp the broader concept behind that transformation, likely because the dataset falls outside my usual area of expertise. Overall, I was able to recreate this figure to closely match the original.
+Eventually, I realized they had multiplied the partner switching data by 24 to reflect a full 24-hour period. Overall, I was able to recreate this figure to closely match the original.
 
 ## Figure 3
 
@@ -191,11 +193,11 @@ ggplot(data = gd2, aes(x = switch, y = groomed, color = type)) +
 
 ![**Original Figure 3**](images/figure%203.jpg)
 
-This one also ended up being pretty close to the original. Once again, the dataset names made the analysis a bit tricky to navigate. One of the main challenges I faced was relabeling the "type" variable. I know the original authors used a loop for this, but I wanted a more straightforward approach since I’m not a big fan of loops. Once I got past the labeling hurdle, I ran into an issue where the colors and the order of categories in my plot didn’t match the original. To fix that, I added a line of code to reorder the data, which helped align my graph more closely with the published version.
+This one also ended up being pretty close to the original. Once again, the dataset names made the analysis a bit tricky to navigate. One of the main challenges I faced was relabeling the "type" variable. I know the original authors used a loop for this, but I wanted a more straightforward approach since I’m not a big fan of loops. Once I got past the labeling hurdle, I ran into an issue where the colors and the order of categories in my plot didn’t match the original. To fix that, I added a line of code to reorder the data, which helped align my graph more closely with the published version. Almost forgot to mention that I experimented with a few statistical tests to recreate the 95% confidence intervals shown in the paper, and the quasipoisson model ended up providing the best fit.
 
 ## Figure 4
 
-This next figure illustrates the effects on grooming outdegree centrality when individual variation in movement propensity is independent across spatial scales.
+This next figure illustrates the effects on grooming out degree centrality when individual variation in movement propensity is independent across spatial scales.
 
 The data we're uploading here will be used for both Figure 4 and Figure 5. It will be split into two separate data frames: `d0` for the Figure 4 graph and `d1` for the Figure 5 graph.
 
@@ -294,4 +296,8 @@ d1 %>%
 
 ![**Original Figure 5**](images/figure%205.jpg)
 
-This is probably the figure that resembles the original the least. While they have a GitHub repository for the datasets, I chose not to rely on it and tried to figure things out on my own. Unfortunately, I couldn’t figure out how to generate the lines properly to match the original, and my scaling is a bit off as well. I wish there had been more detail in the article about how the lines in the graph were created, but I understand that they likely left it vague since they have a GitHub with all their figures. Still, my figure doesn't look very close to the original. Also, I think there might be an error in the published article because I have no idea what that green dashed line is supposed to represent.
+This is probably the figure that resembles the original the least. While they have a GitHub repository for the data sets, I chose not to rely on it and tried to figure things out on my own. Unfortunately, I couldn’t figure out how to generate the lines properly to match the original, and my scaling is a bit off as well. I wish there had been more detail in the article about how the lines in the graph were created, but I understand that they likely left it vague since they have a GitHub with all their figures. Still, my figure doesn't look very close to the original. Also, I think there might be an error in the published article because I have no idea what that green dashed line is supposed to represent.
+
+## Conclusion
+
+In summary, I was able to reproduce most of the visual figures closely, with some deviations due to data labeling, transformation steps, or lack of clarity in the article. The exercise highlighted the importance of clear documentation in open science and helped me better understand how movement behavior can shape social networks in animal systems.
